@@ -13,7 +13,7 @@ class Controller:
         entity = Entity()
         service = SamsungService()
         entity.fname = 'kr-Report_2018.txt'
-        entity.context = './data/'
+        entity.context = './miner/data/'
         service.extract_token(entity)
         service.extract_hanguel()
         service.conversion_token()
