@@ -4,7 +4,7 @@ context path: /Users/saltQ/sbaProject/
 module path: /titanic/data/
 '''
 @dataclass
-class Entity:
+class FileReader:
     context: str = ''
     fname:str = ''
     train:object = None
