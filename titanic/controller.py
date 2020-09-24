@@ -2,6 +2,8 @@ import sys
 sys.path.insert(0, '/Users/saltQ/sbaProject')
 from titanic.entity import Entity
 from titanic.service import Service
+from sklearn.ensemble import RandomForestClassifier # rforest
+import pandas as pd
 
 class Controller:
     def __init__(self):
@@ -58,11 +60,17 @@ class Controller:
         print(f'KNN 검증 결과: {service.accuracy_by_knn(this)}')
         print(f'SVM 검증 결과: {service.accuracy_bt_svm(this)}')
 
-    def submit(self): 
+    def submit(self, train, test): 
         # 머신이 된다. submit은 캐글에게 내 머신을 보내서 평가받게 하는 단계이다.
-        pass
+        this = self.modeling(train, test)
+        clf = RandomForestClassifier()
+        clf.fit(this.train, this.label)
+        prediction = clf.predict(this.test)
+        pd.DataFrame(
+            {'PassengerId': this.id, 'Survived': prediction}
+        ).to_csv(this.context + 'submission.csv', index=False)
 
 if __name__ == '__main__':
     ctrl = Controller()
-    ctrl.learning('train.csv', 'test.csv')
+    ctrl.submit('train.csv', 'test.csv')
     
