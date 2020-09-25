@@ -1,3 +1,11 @@
 {
-    "python.pythonPath": "C:\\Users\\saltQ\\.conda\\envs\\tensorflowenv\\python.exe"
+    "python.pythonPath": "C:\\Users\\saltQ\\.conda\\envs\\tensorflowenv\\python.exe",
+    "launch": {
+        
+
+        "configurations": [],
+        "compounds": []
+    },
+    "emmet.triggerExpansionOnTab": true,
+    "emmet.includeLanguages": {"javascript": "javascriptreact"}
 }

@@ -7,7 +7,7 @@ import tensorflow as tf
 from dataclasses import dataclass
 
 @dataclass
-class Model:    # entity + service
+class Cabbage:    # entity + service
 
     # year,avgTemp,minTemp,maxTemp,rainFall,avgPrice
     # 20100101,-4.9,-11,0.9,0,2123
@@ -60,7 +60,8 @@ class Model:    # entity + service
         return self.avgPrice
 
     def service(self):
-        X = tf.combat.v1.placeholder(tf.float32, shape=[None, 4])
+        print('############# service #############')
+        X = tf.compat.v1.placeholder(tf.float32, shape=[None, 4])
         # year,avgTemp,minTemp,maxTemp,rainFall,avgPrice
         # 에서 avgTemp,minTemp,maxTemp,rainFall 입력 받겠다.
         # year는 모델에서 필요없는 값 -> 상관관계 없음
@@ -79,9 +80,9 @@ class Model:    # entity + service
         # tensorflow에서 변수는 웹프로그래밍에서의 변수와 다르다.
         # 이 변수를 결정하는 것은 외부에서 주어진 값이 아니라 tensor가 내부에서 사용하는 변수이다.
         # 기존 웹에서 사용하는 변수는 placeholder.
-        saver = tf.combat.v1.train.Saver()
+        saver = tf.compat.v1.train.Saver()
         with tf.Session() as sess:
-            sess.run(tf.combat.v1.global_variables_initializer())
+            sess.run(tf.compat.v1.global_variables_initializer())
             saver.restore(sess, self.context + 'saved_model.ckpt')
             data = [[self.avgTemp, self.minTemp, self.maxTemp, self.rainFall], ]
             arr = np.array(data, dtype = np.float32)
@@ -92,8 +93,9 @@ class Model:    # entity + service
             
 
 if __name__ == '__main__':
-    m = Model()
-    dframe = m.new_model('price_data.csv')
-    print(dframe.head())
-    m.create_tf(dframe)
+    cabbage= Cabbage()
+    # dframe = m.new_model('price_data.csv')
+    # print(dframe.head())
+    # m.create_tf(dframe)
+    print(cabbage.test())
     
