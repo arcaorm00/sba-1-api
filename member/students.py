@@ -1,17 +1,20 @@
 import sqlite3
 
-class Member:
+class Student:
     id: str = ''
     pwd: str = ''
     name: str = ''
     birth: str = ''
     regdate: str = ''
 
-    def __init__(self):
-        self.conn = sqlite3.connect('sqlite.db')
-        self.cursor = conn.cursor()
+    
 
 class StudentDao:
+
+    def __init__(self):
+        self.conn = sqlite3.connect('sqlite.db')
+        self.cursor = self.conn.cursor()
+
     # C
     def create(self):
 
@@ -31,7 +34,7 @@ class StudentDao:
         # query += "(userid VARCHAR(10) PRIMARY KEY, password VARCHAR(10), "
         # query += "phone VARCHAR(10), regdate DATE DEFAULT CURRENT_TIMESTAMP)"
         # self.conn.execute(query)
-        cursor.commit()
+        self.conn.commit()
 
     # C
     def insert_one(self, payload):
@@ -43,11 +46,11 @@ class StudentDao:
     # C
     def insert_many(self):
         data = [
-            ('lee', '이솨솨', '1985/12/31'), ('park', '박롸롸', '1970/07/17'), ('choi', '최와와', '1950/06/06')
+            ('lee', '1', '이솨솨', '1985/12/31'), ('park', '1', '박롸롸', '1970/07/17'), ('choi', '1', '최와와', '1950/06/06')
         ]
-        query = "INSERT INTO mamber(id, pwd, name, birth) VALUES (?, ?, ?, ?)"
+        query = "INSERT INTO students(id, pwd, name, birth) VALUES (?, ?, ?, ?)"
         self.cursor.executemany(query, data)
-        self.cursor.commit()
+        self.conn.commit()
 
     # R
     def fetch_by_id(self, id):
@@ -125,7 +128,14 @@ class StudentDao:
         # conn.close() web 상에서는 close 하지 않음
 
 class StudentService:
-    dao = StudentDao()
+    def __init__(self):
+        self.dao = StudentDao()
+
     def add_students(self, student):
         print('#### add_student ####')
-        dao.insert_many()
+        self.dao.create()
+        self.dao.insert_many()
+        print(f'>>> 입력된 학생 수: {self.dao.fetch_count()}')
+
+    def login(self, id, pwd):
+        return self.dao.login(id, pwd)

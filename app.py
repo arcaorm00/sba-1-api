@@ -9,6 +9,11 @@ app = Flask(__name__)
 def hello_world():
     return render_template('join.html')
 
+@app.route('/move/<path>')
+def move(path):
+    return render_template(f'{path}.html')
+
+
 # method 종류에는 총 4개가 있다.
 # GET, POST, PUT, DELETE 그래서 이것들은 다같이 array를 이룬다.
 # 그 array 이름은 methods이다.
@@ -52,9 +57,21 @@ def signup():
     student.name = name
     student.birth = birth
     service = StudentService()
-    service.add_students(student)
+    # service.add_students(student)
 
-    
+    return render_template('login.html')
+
+@app.route('/signin', methods=['POST'])
+def signin():
+    print('########## SIGNIN ##########')
+    id = request.form['id']
+    pwd = request.form['pwd']
+    service = StudentService()
+    name = service.login(id, pwd)[2]
+    print(f'{name} 접속 중 ......')
+    render_params = {}
+    render_params['name'] = name
+    return render_template('index.html', **render_params)
 
 if __name__ == "__main__":
     app.run()
